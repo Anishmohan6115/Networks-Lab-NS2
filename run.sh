@@ -1,6 +1,6 @@
 #!/bin/bash
 echo "">averages.txt
-for i in {0..4}
+for i in {70..89}
 do
    ns main.tcl $i
    python3 script.py

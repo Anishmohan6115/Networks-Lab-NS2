@@ -1,7 +1,7 @@
 #This code contains methods for flow generation and result recording.
 
+global rho
 # the total (theoretical) load in the bottleneck link
-set rho 0.8
 puts "rho = $rho"
 
 # Filetransfer parameters
@@ -10,7 +10,8 @@ set mpktsize 1460
 
 # bottleneck bandwidth, required for setting the load
 set bnbw 10000000
-set nof_tcps 100
+set nof_access 3
+set nof_tcps 99
 set nof_classes 4
 set rho_cl [expr $rho/$nof_classes]
 puts "rho_cl=$rho_cl, nof_classes=$nof_classes"
@@ -108,7 +109,8 @@ proc record_end { } {
     global fmon_bn nssim parr_start pdrops_start nof_classes delres outf
     set parr_start [$fmon_bn set parrivals_]
     set pdrops_start [$fmon_bn set pdrops_]
-    puts "Bottleneck at [$nssim now]: arr=$parr_start, drops=$pdrops_start"
+    set rate_start [expr double($pdrops_start)/$parr_start*100]
+    puts "Bottleneck at [$nssim now]: arr=$parr_start, drops=$pdrops_start, drop rate: $rate_start"
     for {set class 0} {$class < $nof_classes} {incr class} {
         set sum 0
         set n [llength $delres($class)]
